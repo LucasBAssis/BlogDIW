@@ -64,6 +64,8 @@
         </div>
         <form id="form-post">
           <div class="modal-body">
+            <div id="msg" class="col-sm-10 offset-sm-1">
+            </div>
             <div class="form-group">
               <label class="control-label">Titulo:</label>
               <input name="title" type="text" class="form-control" placeholder="Titulo" id="inputTitulo" required>
@@ -159,6 +161,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script src="js/fakedb.js"></script>
 	<script>
+    // Exibindo posts
     var varPost = '';
     for(i = dbLucasBorges.data.length - 1 ; i >= 0; i--) {
       varPost += `
@@ -185,7 +188,6 @@
       // Verfica se o formulário está preenchido corretamente
       if (!$('#form-post')[0].checkValidity()) {
         displayMessage("Preencha o formulário corretamente.");
-        // console.log("Preencha o formulário corretamente.");
         return;
       }
 

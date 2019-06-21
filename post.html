@@ -83,6 +83,8 @@
   <!-- Comentar -->
   <div class="container" style="font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;">
     <div class="row">
+      <div id="msg" class="col-lg-8 col-md-10 mx-auto">
+      </div>
       <div class="col-lg-8 col-md-10 mx-auto">
         <form id="form-coment">
           <div class="form-group">
@@ -151,12 +153,18 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script src="js/fakedb.js"></script>
   <script>
+
+      // Obtem o id do post
       var query = location.search.slice(1);
       var partes = query.split('=');
 
+      // Verifica se o post desejado existe
       if( dbLucasBorges.data[partes[1] - 1] == null ) {
+        // Caso não exista, volta para a página anterior
         window.history.back();
       }
+
+      // Exibindo Titulo do post
       var postTitle = '';
       postTitle += `
         <div class="post-heading">
@@ -165,19 +173,18 @@
           <span class="meta">Postado em ${ dbLucasBorges.data[partes[1] - 1].data }</span>
         </div>
       `
-
       document.getElementById('post-title').innerHTML = postTitle;
 
+      // Exibindo Texto do post
       var postText = '';
-      postText += `
-      
-      <p>${ dbLucasBorges.data[partes[1] - 1].texto }</p>`
-
+      postText += `<p>${ dbLucasBorges.data[partes[1] - 1].texto }</p>`
       document.getElementById('post-text').innerHTML = postText;
 
+      // Exibindo Curtidas do post
       var curtidas = `${ dbLucasBorges.data[partes[1] - 1].curtidas }`
       document.getElementById('curtidas').innerHTML = curtidas + ' curtidas';
 
+      // Exibindo Comentarios do post
       var comentarios = '';
       for(i = 0; i < dbLucasBorges.data[partes[1] - 1].comentarios.length; i++) {
         if( dbLucasBorges.data[partes[1] - 1].comentarios[i].nome != null) {
@@ -197,9 +204,11 @@
 
         curtir(parseInt(campoId));
 
+        // Atualiza o número de curtidas exibido na página
         atualizaCurtidas();
       });
 
+      // Atualiza o número de curtidas exibido na página
       function atualizaCurtidas() {
         var curtidas = `${ dbLucasBorges.data[partes[1] - 1].curtidas }`
         document.getElementById('curtidas').innerHTML = curtidas + ' curtidas';
@@ -208,14 +217,15 @@
       // Intercepta o click do botão Comentar
       $("#btnComentar").click(function () {
 
-        console.log('Entrou no click');
-
-        // Obtem os valores dos campos do formulário
+        // Obtem o id do post
         let campoId = partes[1];
-        if (campoId == "") {
-          displayMessage("Selecione um contato para ser alterado.");
+
+        // Faz a validação do formulário
+        if (!$('#form-coment')[0].checkValidity()) {
+          displayMessage("Preencha o formulário corretamente.");
           return;
         }
+
         let campoNome = $("#inputNome").val();
         let campoComentario = $("#inputComentario").val();
 
